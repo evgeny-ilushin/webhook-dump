@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class WebhookDumpServlet extends HttpServlet {
@@ -71,9 +72,11 @@ public class WebhookDumpServlet extends HttpServlet {
             logger.info("Headers:\n{}", headers);
             logger.info("Data:\n{}\n", reqData);
 
-            StringBuilder userResponse = new StringBuilder();
+            String userResponse = "{ \"user_id\": 123 }";
+            resp.setHeader("X-TrackerToken", UUID.randomUUID().toString());
             //userResponse.append("<html><body><pre>");
 
+            /*
             userResponse.append(reqInfo + "\n\n");
             userResponse.append(headers);
 
@@ -82,10 +85,11 @@ public class WebhookDumpServlet extends HttpServlet {
                 userResponse.append(reqData);
                 userResponse.append("\n");
             }
+            */
 
             //userResponse.append("</pre></body></html>");
 
-            resp.setContentType("text/html");
+            resp.setContentType("application/json");
             resp.getOutputStream().write(userResponse.toString().getBytes("utf-8"));
             resp.setStatus(HttpServletResponse.SC_OK);
         }
